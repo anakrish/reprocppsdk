@@ -1,0 +1,9 @@
+#!/bin/bash
+
+sudo docker build -f Dockerfile . -t cpprestsdk-repro
+
+sudo docker run --rm -v $(pwd):$(pwd) -it cpprestsdk-repro \
+     bash -c "cd /app/cpprestsdk/build.debug/Release/Binaries
+              gdb -ex 'set disable-randomization off' \
+                  -ex 'source $(pwd)/commands.py' \
+                  --args test_runner libhttpclient_test.so"
